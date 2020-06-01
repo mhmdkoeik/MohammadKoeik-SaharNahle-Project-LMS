@@ -1,0 +1,70 @@
+﻿
+@model IEnumerable<LibraryManager.Models.Rental>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Outstanding Rentals</h2>
+
+<table id="rentals" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Book</th>
+            <th>Rented On</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* Talbe now rendered on the client using data from the api
+                @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(customer.Name, "Edit", "Customers", new { id=customer.Id }, null)
+                    </td>
+                    <td>
+                        @customer.MembershipType.Name
+                    </td>
+                    <td>
+                        <button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button>
+                    </td>
+                </tr>
+            }*@
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+            var table = $("#rentals").DataTable({
+                order: [[2, "desc"]],
+                ajax: {
+                    url: "/api/newrentals/get",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "customer.name"
+                        
+                    },
+                    {
+                        data: "book.title"
+
+                    },
+                    {
+                        data: "dateRented",
+                        render: function (data) {
+                            return data.substring(0, 10);
+                        }
+                    }
+                ]
+            });
+
+        });
+    </script>
+
+}
+
